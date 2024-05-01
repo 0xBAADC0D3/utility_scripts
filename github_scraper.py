@@ -1,6 +1,23 @@
 import base64
 import requests
 
+# Step 1: Fetch Search Results
+# You'll need a GitHub personal access token to authenticate your requests. Follow these steps to get one:
+## Go to GitHub, log in, and navigate to Settings > Developer settings > Personal access tokens.
+## Generate a new token with the public_repo scope.
+
+# Step 2: Extract File Information
+# Instead of extracting HTML URLs, extract the repository name and file path from the search results.
+# This information is necessary to construct the URL for downloading the raw file content.
+
+# Step 3: Download Raw File Content
+# Use the extracted repository name and file path to construct a URL for downloading the raw file content.
+
+# The maximum size of the content that can be fetched in this manner is 1 MB. If the file is larger than 1 MB, 
+# the API will return a truncated version of the file content, and you'll need to use the Git Trees API to retrieve 
+# the file's SHA and then use the Git Blobs API to get the file's content in chunks.
+
+
 def fetch_search_results(query, token):
     url = f"https://api.github.com/search/code?q={query}"
     headers = {
@@ -41,8 +58,8 @@ def download_raw_file(repo_name, file_path, token):
 
 
 def main():
-    query = "search term"
-    token = "insert token here"
+    query = "search_term"
+    token = "insert_your_token_here"
 
     search_results = fetch_search_results(query, token)
     if search_results:
@@ -51,7 +68,7 @@ def main():
             download_raw_file(repo_name, file_path, token)
 
 
-temp_dir = 'where to store files'
+temp_dir = "where to store files"
 
 if __name__ == "__main__":
     main()
